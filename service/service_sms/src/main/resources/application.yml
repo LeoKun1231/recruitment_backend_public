@@ -1,0 +1,31 @@
+#服务端口
+server:
+  port: 8204
+  address: 0.0.0.0   # 允许局域网访问
+spring:
+  #服务名
+  application:
+    name: service-sms
+  #返回json全局时间格式
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  #redis
+  redis:
+    host: 47.115.207.222
+    port: 6379
+    database: 0
+    lettuce:
+      pool:
+        max-active: 20
+        max-wait: -1
+        max-idle: 5
+        min-idle: 0
+      shutdown-timeout: 100
+    password: 123456
+  #nacos
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+
+

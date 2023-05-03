@@ -1,0 +1,28 @@
+server:
+  port: 8205
+  address: 0.0.0.0   # 允许局域网访问
+spring:
+  application:
+    name: service-oss
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      max-file-size: 10MB     #单个文件最大限制
+      max-request-size: 50MB  #多个文件最大限制
+#阿里云 OSS
+#不同的服务器，地址不同
+oss:
+  file:
+    endpoint: oss-cn-hangzhou.aliyuncs.com
+    keyid: LTAI5tQqqSmcpCqoVyEzc97H
+    keysecret: KNTkPZziyTADLmE5X03faBBOAxTswg
+    bucketname: hqk10
+
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 600000
+        readTimeout: 600000

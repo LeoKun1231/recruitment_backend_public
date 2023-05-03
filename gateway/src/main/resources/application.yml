@@ -1,0 +1,42 @@
+server:
+  port: 8222
+  address: 0.0.0.0   # 允许局域网访问
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: service-company
+          uri: lb://service-company
+          predicates:
+            - Path=/company/** # 路径匹配
+        - id: service-company
+          uri: lb://service-company
+          predicates:
+            - Path=/home/** # 路径匹配
+        - id: service-common
+          uri: lb://service-common
+          predicates:
+            - Path=/common/** # 路径匹配
+        - id: service-user
+          uri: lb://service-user
+          predicates:
+            - Path=/user/** # 路径匹配
+        - id: service-sms
+          uri: lb://service-sms
+          predicates:
+            - Path=/sms/** # 路径匹配
+        - id: service-oss
+          uri: lb://service-oss
+          predicates:
+            - Path=/oss/** # 路径匹配
+        - id: service-user
+          uri: lb://service-user
+          predicates:
+            - Path=/acl/** # 路径匹配
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
