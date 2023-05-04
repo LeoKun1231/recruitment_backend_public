@@ -12,7 +12,7 @@ spring:
   #mysql数据库连接
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/recruitment_user?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://43.139.53.181:3306/recruitment_user?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
   #返回json全局时间格式
@@ -21,7 +21,7 @@ spring:
     time-zone: GMT+8
   #redis
   redis:
-    host: 47.115.207.222
+    host: 43.139.53.181
     port: 6379
     database: 0
     lettuce:
@@ -31,11 +31,11 @@ spring:
         max-idle: 5
         min-idle: 0
       shutdown-timeout: 100
-    password: 123456
+    password: HuangWei0426
   #nacos
   cloud:
     nacos:
-      server-addr: localhost:8848
+      server-addr: 43.139.53.181:8848
 #mybatis日志
 mybatis-plus:
   configuration:

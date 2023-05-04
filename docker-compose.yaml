@@ -1,0 +1,51 @@
+version: "1.0"
+
+networks:
+  edu:
+services:
+  # 定义服务名字，只要不冲突即可
+  gateway:
+    # 镜像名字
+    image: gateway
+    # 自定义容器名字
+    container_name: gateway
+    ports:
+      - "8666:8666"
+      # 网络模式
+    networks:
+      - edu
+  service_user:
+    image: service_user
+    container_name: service_user
+    ports:
+      - "8201:8201"
+    networks:
+      - edu
+  service_company:
+    image: service_company
+    container_name: service_company
+    ports:
+      - "8201:8201"
+    networks:
+      - edu
+  service_common:
+    image: service_common
+    container_name: service_common
+    ports:
+      - "8202:8202"
+    networks:
+      - edu
+  service_oss:
+    image: service_oss
+    container_name: service_oss
+    ports:
+      - "8205:8205"
+    networks:
+      - edu
+  service_sms:
+    image: service_sms
+    container_name: service_sms
+    ports:
+      - "8204:8204"
+    networks:
+      - edu
