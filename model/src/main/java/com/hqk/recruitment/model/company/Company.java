@@ -52,6 +52,7 @@ public class Company implements Serializable {
     @ApiModelProperty(value = "所在城市")
     @TableField(typeHandler = FastjsonTypeHandler.class)
     private List<String> city;
+    /**/
 
     @ApiModelProperty(value = "企业规模")
     private String size;
