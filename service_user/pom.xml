@@ -30,13 +30,6 @@
                     </execution>
                 </executions>
                 <!--构建镜像之后的镜像信息-->
-                <configuration>
-                    <repository>${project.artifactId}</repository>
-                    <tag>${project.version}</tag>
-                    <buildArgs>
-                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-                    </buildArgs>
-                </configuration>
             </plugin>
         </plugins>
     </build>
