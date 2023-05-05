@@ -15,7 +15,6 @@ node{
 
     stage('编译,安装service_user工程'){
             echo "Building service_user"
-            sh "mvn -f service_user clean install"
             try{
                 echo "第一次启动容器service_user"
                 sh "docker run  --name=service_user -d -p 8210:8210 service_user"
@@ -33,7 +32,6 @@ node{
 
     stage('编译,安装service_common工程'){
             echo "Building service_common"
-            sh "mvn -f service_common clean install"
             try{
                 echo "第一次启动容器service_common"
                 sh "docker run  --name=service_common -d -p 8202:8202 service_common"
@@ -51,7 +49,6 @@ node{
 
     stage('编译,安装service_company工程'){
             echo "Building service_company"
-            sh "mvn -f service_company clean install"
             try{
                 echo "第一次启动容器service_company"
                 sh "docker run  --name=service_company -d -p 8201:8201 service_company"
@@ -69,7 +66,6 @@ node{
 
     stage('编译,安装service_oss工程'){
             echo "Building service_oss"
-            sh "mvn -f service_oss clean install"
             try{
                 echo "第一次启动容器 service_oss"
                 sh "docker run  --name=service_oss -d -p 8205:8205 service_oss"
@@ -87,7 +83,6 @@ node{
 
     stage('编译,安装 service_sms 工程'){
             echo "Building service_sms"
-            sh "mvn -f service_sms clean install"
             try{
                 echo "第一次启动容器 service_sms"
                 sh "docker run  --name=service_sms -d -p 8204:8204 service_sms"
@@ -104,7 +99,6 @@ node{
     }
     stage('编译,安装 gateway 工程'){
             echo "Building gateway"
-            sh "mvn -f gateway clean install"
             try{
                 echo "第一次启动容器 gateway"
                 sh "docker run  --name=gateway -d -p 8666:8666 gateway"
