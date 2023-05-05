@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:8
 VOLUME /tmp
 ARG JAR_FILE
 ADD ./target/service_company.jar /service_company.jar
