@@ -10,6 +10,7 @@ node{
     stage('拉取代码'){
         checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'cc569b95-56b6-495c-967e-91b980c1a7b0', url: 'https://gitee.com/leo3366/recruitment_backend.git']]])
     }
+    sh 'mvn clean package -Dmaven.test.skip=true'
     sh "mvn clean"
     sh "mvn install"
 

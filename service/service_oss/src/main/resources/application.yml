@@ -6,6 +6,9 @@ spring:
     name: service-oss
   profiles:
     active: dev
+  cloud:
+    nacos:
+      server-addr: 43.139.53.181:8848
   servlet:
     multipart:
       max-file-size: 10MB     #单个文件最大限制
