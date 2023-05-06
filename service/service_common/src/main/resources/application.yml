@@ -12,7 +12,7 @@ spring:
   #mysql数据库连接
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://43.139.53.181:3306/recruitment_common?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://43.136.87.64:3306/recruitment_common?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
   #返回json全局时间格式
@@ -25,7 +25,7 @@ spring:
       max-request-size: 50MB  #多个文件最大限制
   #redis
   redis:
-    host: 43.139.53.181
+    host: 43.136.87.64
     port: 6379
     database: 0
     lettuce:
@@ -39,7 +39,7 @@ spring:
   #nacos
   cloud:
     nacos:
-      server-addr: 43.139.53.181:8848
+      server-addr: 43.136.87.64:8848
 #mybatis日志
 mybatis-plus:
   configuration:
