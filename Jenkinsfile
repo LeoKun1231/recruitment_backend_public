@@ -7,7 +7,7 @@ def git_branch="main"
 
 node{
     stage('拉取代码'){
-       checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '20e203be-3c59-4f2b-97ac-c1eb84e7efa5', url: 'https://gitee.com/leo3366/recruitment_backend.git']]]
+       checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '20e203be-3c59-4f2b-97ac-c1eb84e7efa5', url: 'https://gitee.com/leo3366/recruitment_backend.git']]])
     }
     sh 'mvn clean package -Dmaven.test.skip=true'
     sh "mvn clean"
