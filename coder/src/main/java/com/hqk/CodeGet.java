@@ -31,7 +31,7 @@ public class CodeGet {
         dsc.setUrl("jdbc:mysql://localhost:3306/recruitment_company?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("123456");
+        dsc.setPassword("HuangWei0426");
         dsc.setDbType(DbType.MYSQL);
         mpg.setDataSource(dsc);
 
