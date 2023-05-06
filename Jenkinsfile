@@ -6,8 +6,6 @@ def git_url = "https://gitee.com/leo3366/recruitment_backend.git"
 def git_branch="main"
 
 node{
-    sh 'docker stop gateway service_common service_company service_oss service_sms service_user'
-    sh 'docker remove gateway service_common service_company service_oss service_sms service_user'
     stage('拉取代码'){
        checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'd31c5c5b-cf9a-419a-b5ce-c4ba0532c29a', url: 'https://gitee.com/leo3366/recruitment_backend.git']]])
     }
