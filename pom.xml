@@ -54,10 +54,6 @@
 	</build>
 	<profiles>
 		<profile>
-			<activation>
-				<!--默认为dev环境打包方式-->
-				<activeByDefault>true</activeByDefault>
-			</activation>
 			<id>dev</id>
 			<properties>
 				<spring.profiles.active>dev</spring.profiles.active>
