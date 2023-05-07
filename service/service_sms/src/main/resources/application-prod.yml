@@ -6,15 +6,15 @@ spring:
   #服务名
   application:
     name: service-sms
-  profiles:
-    active: @spring.profiles.active@
   #返回json全局时间格式
+  profiles:
+    active: prod
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   #redis
   redis:
-    host: ${spring.address}
+    host: @address@
     port: 6379
     database: 0
     lettuce:
@@ -28,6 +28,6 @@ spring:
   #nacos
   cloud:
     nacos:
-      server-addr: ${spring.nacos.address}
+      server-addr: @nacos.address@
 
 

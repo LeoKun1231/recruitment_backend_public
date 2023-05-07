@@ -8,7 +8,7 @@ spring:
     name: service-company
 #环境设置
   profiles:
-    active: @spring.profiles.active@
+    active: dev
   servlet:
     multipart:
       max-file-size: 10MB     #单个文件最大限制
@@ -16,7 +16,7 @@ spring:
 #mysql数据库连接
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${spring.address}:3306/recruitment_company?characterEncoding=utf-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://@address@:3306/recruitment_company?characterEncoding=utf-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: HuangWei0426
 #返回json全局时间格式
@@ -26,7 +26,7 @@ spring:
   #nacos
   cloud:
     nacos:
-      server-addr: ${spring.nacos.address}
+      server-addr: @nacos.address@
 #mybatis日志
 mybatis-plus:
   configuration:

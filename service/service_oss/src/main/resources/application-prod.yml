@@ -5,10 +5,10 @@ spring:
   application:
     name: service-oss
   profiles:
-    active: @spring.profiles.active@
+    active: prod
   cloud:
     nacos:
-      server-addr: ${spring.nacos.address}
+      server-addr: @nacos.address@
   servlet:
     multipart:
       max-file-size: 10MB     #单个文件最大限制

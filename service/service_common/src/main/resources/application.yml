@@ -8,7 +8,7 @@ spring:
     name: service-common
   #环境设置
   profiles:
-    active: dev
+    active: @spring.profiles.active@
   #mysql数据库连接
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

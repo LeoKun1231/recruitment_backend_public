@@ -1,27 +1,31 @@
 #服务端口
 server:
-  port: 8210
+  port: 8202
   address: 0.0.0.0   # 允许局域网访问
 spring:
   #服务名
   application:
-    name: service-user
+    name: service-common
   #环境设置
   profiles:
-    active: @spring.profiles.active@
+    active: dev
   #mysql数据库连接
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${spring.address}:3306/recruitment_user?characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://@address@:3306/recruitment_common?characterEncoding=utf-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: HuangWei0426
   #返回json全局时间格式
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+  servlet:
+    multipart:
+      max-file-size: 10MB     #单个文件最大限制
+      max-request-size: 50MB  #多个文件最大限制
   #redis
   redis:
-    host: ${spring.address}
+    host: @address@
     port: 6379
     database: 0
     lettuce:
@@ -35,18 +39,19 @@ spring:
   #nacos
   cloud:
     nacos:
-      server-addr: ${spring.nacos.address}
+      server-addr: @nacos.address@
 #mybatis日志
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  mapper-locations: classpath:/mapper/*.xml
-  type-aliases-package: com.hqk.recruitment.user.mapper
+  mapper-locations: classpath:com/hqk/recruitment/common/mapper/xml/*.xml
+  type-aliases-package: com.hqk.recruitment.common.mapper
   global-config:
     db-config:
       logic-delete-field: isDeleted
       logic-delete-value: 1 # 逻辑已删除值(默认为 1)
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+
 feign:
   client:
     config:

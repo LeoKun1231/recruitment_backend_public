@@ -8,11 +8,11 @@ spring:
     name: service-user
   #环境设置
   profiles:
-    active: @spring.profiles.active@
+    active: dev
   #mysql数据库连接
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${spring.address}:3306/recruitment_user?characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql:/@address@:3306/recruitment_user?characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
     username: root
     password: HuangWei0426
   #返回json全局时间格式
@@ -21,7 +21,7 @@ spring:
     time-zone: GMT+8
   #redis
   redis:
-    host: ${spring.address}
+    host: ${address}
     port: 6379
     database: 0
     lettuce:
@@ -35,7 +35,7 @@ spring:
   #nacos
   cloud:
     nacos:
-      server-addr: ${spring.nacos.address}
+      server-addr: @nacos.address@
 #mybatis日志
 mybatis-plus:
   configuration:

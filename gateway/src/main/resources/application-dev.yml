@@ -11,7 +11,7 @@ server:
 
 spring:
   profiles:
-    active: @spring.profiles.active@
+    active: dev
   cloud:
     gateway:
       discovery:
@@ -48,4 +48,4 @@ spring:
             - Path=/acl/** # 路径匹配
     nacos:
       discovery:
-        server-addr: ${spring.nacos.address}
+        server-addr: @nacos.address@
