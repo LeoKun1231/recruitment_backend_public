@@ -12,7 +12,7 @@ spring:
     time-zone: GMT+8
   #redis
   redis:
-    host: 43.136.87.64
+    host: ${spring.address}
     port: 6379
     database: 0
     lettuce:
@@ -26,6 +26,6 @@ spring:
   #nacos
   cloud:
     nacos:
-      server-addr: 43.136.87.64:8848
+      server-addr: ${spring.nacos.address}
 
 

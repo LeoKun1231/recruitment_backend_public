@@ -52,7 +52,28 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	<profiles>
+		<profile>
+			<activation>
+				<!--默认为dev环境打包方式-->
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<id>dev</id>
+			<properties>
+				<spring.profiles.active>dev</spring.profiles.active>
+				<nacos.address>localhost:8848</nacos.address>
+				<address>43.136.87.64</address>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<spring.profiles.active>prod</spring.profiles.active>
+				<nacos.address>43.136.87.64:8848</nacos.address>
+				<address>43.136.87.64</address>
+			</properties>
+		</profile>
+	</profiles>
 	<!--配置dependencyManagement锁定依赖的版本-->
 	<dependencyManagement>
 		<dependencies>

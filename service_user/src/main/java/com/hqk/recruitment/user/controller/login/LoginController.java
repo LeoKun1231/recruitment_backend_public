@@ -68,13 +68,4 @@ public class LoginController {
         return userService.resetPasswordByTelephone(loginPasswordReset,authorization);
     };
 
-    @GetMapping("/admin/checkPhone/{telephone}")
-    public R checkPhoneForAdmin(@PathVariable String telephone){
-        Boolean isExist= userService.checkPhone(telephone);
-        if(isExist){
-            return R.error().message("该手机号已经绑定");
-        }else{
-            return R.ok().message(null);
-        }
-    }
 }
