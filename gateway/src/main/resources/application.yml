@@ -2,11 +2,11 @@ server:
   port: 8666
 
   #
-  ssl: #开启ssl
-    enabled: true
-    key-store: classpath:9925094_www.hqk10.xyz.pfx
-    key-store-type: PKCS12
-    key-store-password: fdielsu6
+#  ssl: #开启ssl
+#    enabled: true
+#    key-store: classpath:9925094_www.hqk10.xyz.pfx
+#    key-store-type: PKCS12
+#    key-store-password: fdielsu6
 
 spring:
   profiles:

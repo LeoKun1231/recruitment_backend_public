@@ -75,6 +75,7 @@ public class TopicServiceImpl extends ServiceImpl<TopicMapper, Topic> implements
      */
     @Override
     public R deleteTopById(Long id) {
+
         // 1.删除所有带此话题的文章
         List<Article> ids = articleService.list(new QueryWrapper<Article>().eq("topic_id", id).select("id"));
         List<Long> longList = ids.stream().map(Article::getId).collect(Collectors.toList());
@@ -92,6 +93,8 @@ public class TopicServiceImpl extends ServiceImpl<TopicMapper, Topic> implements
 
     @Override
     public boolean updateTopic(TopicUpdateVo topicUpdateVo) {
+
+
         Topic topic = new Topic();
         BeanUtils.copyProperties(topicUpdateVo,topic);
         return this.updateById(topic);

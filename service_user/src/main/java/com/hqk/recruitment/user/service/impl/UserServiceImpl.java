@@ -144,6 +144,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return this.createUseInfo(user);
     }
 
+    /**
+     * 根据id获取用户基本信息
+     * @param id
+     * @return
+     */
     @Override
     public UserVo getUserInfoById(Long id) {
         User user = this.getById(id);
@@ -228,6 +233,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public boolean deleteUser(Long userId) {
+
         if(Objects.isNull(userId)){
             throw new MyCustomException(20000,"用户Id不能为空");
         }
@@ -350,18 +356,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return R.ok().data("records", list).data("totalCount",page.getTotal()).message(null);
     }
 
+    /**
+     * 添加管理者
+     * @param adminVo
+     * @return
+     */
     @Override
     public R addAdmin(AdminUpdateVo adminVo) {
         Long roleId = adminVo.getRoleId();
         String account = adminVo.getAccount();
         String password = adminVo.getPassword();
         List<Long> majorIds = adminVo.getMajorIds();
-        if(!Objects.isNull(account)){
-            User user1 = this.getOne(new QueryWrapper<User>().eq("account", account));
-            if(!Objects.isNull(user1)){
-                return R.error().message("该帐号已存在，请重新输入");
-            }
-        }
+        String nickName = adminVo.getNickName();
+        String telephone = adminVo.getTelephone();
+        String email = adminVo.getEmail();
+
+        //检查是否有重复
+        this.checkUserPropertiesRepeat(-1L,account,nickName,telephone,email);
+
+
         if(Objects.isNull(password)){
             adminVo.setPassword(bCryptPasswordEncoder.encode("123456"));
         }else{
@@ -390,21 +403,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return R.error().message("添加失败");
     }
 
+    /**
+     * 修改管理者
+     * @param adminUpdateVo
+     * @return
+     */
     @Override
     public R updateUser(AdminUpdateVo adminUpdateVo) {
         List<Long> majorIds = adminUpdateVo.getMajorIds();
         String account = adminUpdateVo.getAccount();
         Long roleId = adminUpdateVo.getRoleId();
+        String nickName = adminUpdateVo.getNickName();
+        String telephone = adminUpdateVo.getTelephone();
+        String email = adminUpdateVo.getEmail();
+        Long id = adminUpdateVo.getId();
 
-        //根据account查询
-        User user1 = this.getOne(new QueryWrapper<User>().eq("account", account));
-        if(!Objects.isNull(user1)){
-            //根据修改的id查询原本的accout
-            User user2 = this.getOne(Wrappers.<User>lambdaQuery().eq(User::getId, adminUpdateVo.getId()));
-            if(!account.equals(user2.getAccount())){
-                return R.error().message("该帐号已存在，请重新输入");
-            }
-        }
+        //检查是否有重复
+        this.checkUserPropertiesRepeat(id,account,nickName,telephone,email);
 
         User user = new User();
         BeanUtils.copyProperties(adminUpdateVo,user);
@@ -431,6 +446,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
 
+    /**
+     * 获取学生列表
+     * @param studentQueryVo
+     * @return
+     */
     @Override
     public R getStudentList(StudentQueryVo studentQueryVo) {
         Integer currentPage = studentQueryVo.getCurrentPage();
@@ -534,17 +554,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return R.ok().data("records", list).data("totalCount",page.getTotal()).message(null);
     }
 
+    /**
+     * 添加学生
+     * @param studentUpdateVo
+     * @return
+     */
     @Override
     public R addStudent(StudentUpdateVo studentUpdateVo) {
         String account = studentUpdateVo.getAccount();
         String password = studentUpdateVo.getPassword();
         Long majorId = studentUpdateVo.getMajorId();
-        if(!Objects.isNull(account)){
-            User user1 = this.getOne(new QueryWrapper<User>().eq("account", account));
-            if(!Objects.isNull(user1)){
-                return R.error().message("该帐号已存在，请重新输入");
-            }
-        }
+
+        String nickName = studentUpdateVo.getNickName();
+        String email = studentUpdateVo.getEmail();
+        String telephone = studentUpdateVo.getTelephone();
+
+        this.checkUserPropertiesRepeat(-1L,account,nickName,telephone,email);
+
+
         if(Objects.isNull(password)){
             studentUpdateVo.setPassword(bCryptPasswordEncoder.encode("123456"));
         }else{
@@ -566,19 +593,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return R.error().message("添加学生失败");
     }
 
+    /**
+     * 修改学生
+     * @param studentUpdateVo
+     * @return
+     */
     @Override
     public R updateStudent(StudentUpdateVo studentUpdateVo) {
         Long majorId = studentUpdateVo.getMajorId();
         String account = studentUpdateVo.getAccount();
-        //根据account查询
-        User user1 = this.getOne(new QueryWrapper<User>().eq("account", account));
-        if(!Objects.isNull(user1)){
-            //根据修改的id查询原本的accout
-            User user2 = this.getOne(Wrappers.<User>lambdaQuery().eq(User::getId, studentUpdateVo.getId()));
-            if(!account.equals(user2.getAccount())){
-                return R.error().message("该帐号已存在，请重新输入");
-            }
-        }
+        Long id = studentUpdateVo.getId();
+        String telephone = studentUpdateVo.getTelephone();
+        String nickName = studentUpdateVo.getNickName();
+        String email = studentUpdateVo.getEmail();
+
+        this.checkUserPropertiesRepeat(id,account,nickName,telephone,email);
+
         User user = new User();
         BeanUtils.copyProperties(studentUpdateVo,user);
         boolean b = this.updateById(user);
@@ -593,6 +623,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
 
+    /**
+     * 批量添加学生
+     * @param list
+     * @param majorId
+     * @return
+     */
     @Override
     public boolean MySaveBacth(List<User> list,Long majorId) {
         String encode = bCryptPasswordEncoder.encode("123456");
@@ -633,16 +669,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return R.ok().message("添加学生成功");
     }
 
+    /**
+     * 添加公司管理者
+     * @param bossVo
+     * @return
+     */
     @Override
     public R addBoss(BossUpdateVo bossVo) {
         String account = bossVo.getAccount();
         String password = bossVo.getPassword();
-        if(!Objects.isNull(account)){
-            User user = this.getOne(Wrappers.<User>lambdaQuery().eq(User::getAccount, account));
-            if(!Objects.isNull(user)){
-                return R.error().message("该帐号已存在，请重新输入");
-            }
-        }
+        String email = bossVo.getEmail();
+        String nickName = bossVo.getNickName();
+        String telephone = bossVo.getTelephone();
+
+        this.checkUserPropertiesRepeat(-1L,account,nickName,telephone,email);
+
         if(Objects.isNull(password)){
             bossVo.setPassword(bCryptPasswordEncoder.encode("123456"));
         }else{
@@ -665,6 +706,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return R.error().message("添加公司失败");
     }
 
+    /**
+     * 获取公司管理者列表
+     * @param bossQueryVo
+     * @return
+     */
     @Override
     public R getBossList(BossQueryVo bossQueryVo) {
         Integer currentPage = bossQueryVo.getCurrentPage();
@@ -747,21 +793,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return R.ok().data("records", list).data("totalCount",page.getTotal()).message(null);
     }
 
+    /**
+     * 修改公司管理者
+     * @param bossVo
+     * @return
+     */
     @Override
     public R updateBoss(BossUpdateVo bossVo) {
         String account = bossVo.getAccount();
-        //根据account查询
-        User user1 = this.getOne(new QueryWrapper<User>().eq("account", account));
-        if(!Objects.isNull(user1)){
-            //根据修改的id查询原本的accout
-            User user2 = this.getOne(Wrappers.<User>lambdaQuery().eq(User::getId, bossVo.getId()));
-            if(!account.equals(user2.getAccount())){
-                return R.error().message("该帐号已存在，请重新输入");
-            }
-        }
+        Long id = bossVo.getId();
+        String nickName = bossVo.getNickName();
+        String telephone = bossVo.getTelephone();
+        String email = bossVo.getEmail();
+
+        this.checkUserPropertiesRepeat(id,account,nickName,telephone,email);
+
         User user = new User();
         BeanUtils.copyProperties(bossVo,user);
-        Long id = bossVo.getId();
         User user2 = this.getOne(Wrappers.<User>lambdaQuery().eq(User::getId, id).select(User::getCompanyName, User::getCompanyId));
         String companyName = user2.getCompanyName();
         String companyId = user2.getCompanyId();
@@ -777,6 +825,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
 
+
+    /**
+     * 修改公司是否上线
+     * @param id
+     * @return
+     */
     @Override
     public R changeActive(Long id) {
         User user = this.getOne(Wrappers.<User>lambdaQuery().eq(User::getId, id));
@@ -791,6 +845,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
 
+    /**
+     * 修改公司状态为未审核状态
+     * @param id
+     * @return
+     */
     @Override
     public boolean changeCompanyStatus(Long id) {
         User user = this.getOne(Wrappers.<User>lambdaQuery().eq(User::getId, id));
@@ -798,12 +857,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return this.updateById(user);
     }
 
+    /**
+     * 获取公司状态
+     * @param id
+     * @return
+     */
     @Override
     public R getStatus(Long id) {
         User user = this.getOne(Wrappers.<User>lambdaQuery().eq(User::getId, id));
         return R.ok().message(null).data("status",user.getStatus()).data("reason",user.getReason());
     }
 
+    /**
+     * 审核公司
+     * @param map
+     * @return
+     */
     @Override
     public R checkCompany(Map map) {
         Integer id = (Integer) map.get("id");
@@ -826,22 +895,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
 
+
+    /**
+     * 添加HR
+     * @param hrUpdateVo
+     * @param authorization
+     * @return
+     */
     @Override
     public R addHR(HrUpdateVo hrUpdateVo,String authorization) {
         String account = hrUpdateVo.getAccount();
         String password = hrUpdateVo.getPassword();
-        if(!Objects.isNull(account)){
-            User user = this.getOne(Wrappers.<User>lambdaQuery().eq(User::getAccount, account));
-            if(!Objects.isNull(user)){
-                return R.error().message("该帐号已存在，请重新输入");
-            }
-        }
+        String telephone = hrUpdateVo.getTelephone();
+        String email = hrUpdateVo.getEmail();
+        String nickName = hrUpdateVo.getNickName();
+
+        this.checkUserPropertiesRepeat(-1L,account,nickName,telephone,email);
+
         if(Objects.isNull(password)){
             hrUpdateVo.setPassword(bCryptPasswordEncoder.encode("123456"));
         }else{
             hrUpdateVo.setPassword(bCryptPasswordEncoder.encode(password));
         }
-        String token = this.getToken(authorization);
+        String token = JwtHelper.getToken(authorization);
         Long userId = JwtHelper.getUserId(token);
         User user1 = this.getOne(Wrappers.<User>lambdaQuery().eq(User::getId, userId).select(User::getCompanyName,User::getCompanyId));
         User user = new User();
@@ -861,18 +937,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return R.error().message("添加HR失败");
     }
 
+    /**
+     * 修改HR
+     * @param hrUpdateVo
+     * @param authorization
+     * @return
+     */
     @Override
     public R updateHR(HrUpdateVo hrUpdateVo,String authorization) {
         String account = hrUpdateVo.getAccount();
-        //根据account查询
-        User user1 = this.getOne(new QueryWrapper<User>().eq("account", account));
-        if(!Objects.isNull(user1)){
-            //根据修改的id查询原本的accout
-            User user2 = this.getOne(Wrappers.<User>lambdaQuery().eq(User::getId, hrUpdateVo.getId()));
-            if(!account.equals(user2.getAccount())){
-                return R.error().message("该帐号已存在，请重新输入");
-            }
-        }
+        String nickName = hrUpdateVo.getNickName();
+        String telephone = hrUpdateVo.getTelephone();
+        String email = hrUpdateVo.getEmail();
+        Long id = hrUpdateVo.getId();
+
+        this.checkUserPropertiesRepeat(id,account,nickName,telephone,email);
+
         User user = new User();
         BeanUtils.copyProperties(hrUpdateVo,user);
         boolean b = this.updateById(user);
@@ -883,9 +963,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
 
+    /**
+     * 获取HR列表
+     * @param hrQueryVo
+     * @param authorization
+     * @return
+     */
     @Override
     public R getHRList(HrQueryVo hrQueryVo,String authorization) {
-        String token = this.getToken(authorization);
+        String token = JwtHelper.getToken(authorization);
         Long userId = JwtHelper.getUserId(token);
         String companyName = this.getOne(Wrappers.<User>lambdaQuery().eq(User::getId, userId).select(User::getCompanyName)).getCompanyName();
         Integer currentPage = hrQueryVo.getCurrentPage();
@@ -961,6 +1047,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return R.ok().data("records", list).data("totalCount",page.getTotal()).message(null);
     }
 
+    /**
+     * 获取上线的公司id
+     * @return
+     */
     @Override
     public List<Long> getActiveCompany() {
         return this.list(Wrappers.<User>lambdaQuery()
@@ -1028,9 +1118,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public R editUser(EditUserVo editUserVo,String authorization) {
-
         String token = JwtHelper.getToken(authorization);
         Long userId = JwtHelper.getUserId(token);
+        String nickName = editUserVo.getNickName();
+        String telephone = editUserVo.getTelephone();
+        String email = editUserVo.getEmail();
+
+        this.checkUserPropertiesRepeat(userId,null,nickName,telephone,email);
         User user = new User();
         BeanUtils.copyProperties(editUserVo,user);
         user.setId(userId);
@@ -1069,23 +1163,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public boolean closeCompany(Long id) {
         User user = this.getOne(Wrappers.<User>lambdaQuery().eq(User::getId, id));
-        Integer active = user.getActive();
         user.setActive(0);
         return this.updateById(user);
     }
 
-
-    String getToken(String authorization){
-        if(authorization.length()<=7){
-            throw new MyCustomException(20000,"token不存在");
-        }
-        String token= authorization.substring(7, authorization.length());
-        boolean isNotExpire = JwtHelper.checkToken(token);
-        if(!isNotExpire){
-            throw new MyCustomException(20000,"token过期");
-        }
-        return token;
-    }
 
     /**
      * 返回给前端的登录用户信息
@@ -1129,4 +1210,48 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         map.put("token",token);
         return map;
     }
+
+    /**
+     * 检查字段是否重复
+     * @param id
+     * @param account
+     * @param nickName
+     * @param telephone
+     * @param email
+     */
+    private void checkUserPropertiesRepeat(Long id, String account,String nickName,String telephone,String email){
+        //查看account是否重复
+        if(!Objects.isNull(account)){
+            User user1 = this.getOne(Wrappers.<User>lambdaQuery().eq(User::getAccount,account).ne(User::getId,id));
+            if(!Objects.isNull(user1)){
+                throw new MyCustomException(20000,"该帐号已存在，请重新输入");
+            }
+        }
+
+        //查看手机号是否有重复
+        if(!Objects.isNull(telephone)){
+            User one = this.getOne(Wrappers.<User>lambdaQuery().eq(User::getTelephone, telephone).ne(User::getId,id));
+            if(!Objects.isNull(one)){
+                throw new MyCustomException(20000,"该手机号已存在，请重新输入");
+            }
+        }
+
+        //查看手机号是否有重复
+        if(!Objects.isNull(nickName)){
+            User one = this.getOne(Wrappers.<User>lambdaQuery().eq(User::getNickName, nickName).ne(User::getId,id));
+            if(!Objects.isNull(one)){
+                throw new MyCustomException(20000,"该用户名已存在，请重新输入");
+            }
+        }
+
+        //查看手机号是否有重复
+        if(!Objects.isNull(email)){
+            User one = this.getOne(Wrappers.<User>lambdaQuery().eq(User::getEmail, email).ne(User::getId,id));
+            if(!Objects.isNull(one)){
+                throw new MyCustomException(20000,"该邮箱已存在，请重新输入");
+            }
+        }
+
+    }
+
 }

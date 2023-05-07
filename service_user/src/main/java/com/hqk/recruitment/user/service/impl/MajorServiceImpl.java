@@ -94,6 +94,8 @@ public class MajorServiceImpl extends ServiceImpl<MajorMapper, Major> implements
 
     @Override
     public boolean deleteMajors(List<Long> ids) {
+
+
         if(ids.size()==0){
             throw new MyCustomException(20000,"请选择系或专业进行删除");
         }
@@ -111,12 +113,6 @@ public class MajorServiceImpl extends ServiceImpl<MajorMapper, Major> implements
         if(list.size()>0){
             boolean b = this.removeByIds(list);
             if(b){
-                //如果删除成功，则删除对应用户的负责的id
-//                List<UserMajor> userMajors = userMajorService.list(Wrappers.<UserMajor>lambdaQuery().in(UserMajor::getMajorId, list));
-//                List<Long> userIds = userMajors.stream().map(UserMajor::getUserId).collect(Collectors.toList());
-//
-//                userService.deleteUserByIds(userIds);
-
                 userMajorService.remove(new QueryWrapper<UserMajor>().in("major_id",list));
             }
             return b;
@@ -127,6 +123,7 @@ public class MajorServiceImpl extends ServiceImpl<MajorMapper, Major> implements
 
     @Override
     public boolean updateMajor(MajorVo majorVo) {
+
         Major major = new Major();
         BeanUtils.copyProperties(majorVo,major);
         return this.updateById(major);
