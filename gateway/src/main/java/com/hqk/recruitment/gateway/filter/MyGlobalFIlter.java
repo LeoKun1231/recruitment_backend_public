@@ -32,11 +32,7 @@ public class MyGlobalFIlter implements GlobalFilter, Ordered {
         //登录接口不拦截
         if(antPathMatcher.match("/user/login/**",path) || antPathMatcher.match("/sms/**",path)){
             chain.filter(exchange);
-            log.warn("filter",path);
-            System.out.println("path = filter" + path);
         }else{//其他的必须进行拦截，验证是否有Token
-            log.warn("token",path);
-            System.out.println("path = token" + path);
             List<String> tokenList = request.getHeaders().get("Authorization");
             //判断列表是否为空
             if(null == tokenList){
