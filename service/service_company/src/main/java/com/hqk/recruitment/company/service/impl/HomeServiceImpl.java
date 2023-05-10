@@ -257,7 +257,7 @@ public class HomeServiceImpl implements HomeService {
         Job job = jobService.getOne(Wrappers.<Job>lambdaQuery().eq(Job::getId, id));
         Company company = companyService.getOne(Wrappers.<Company>lambdaQuery().eq(Company::getId, job.getCompanyId()).select(Company::getShortName, Company::getAvatar, Company::getSize, Company::getDesc, Company::getGovUrl, Company::getLinkman));
 
-        UserJob userJob = userJobService.getOne(Wrappers.<UserJob>lambdaQuery().eq(UserJob::getUserId, userId));
+        UserJob userJob = userJobService.getOne(Wrappers.<UserJob>lambdaQuery().eq(UserJob::getUserId, userId).eq(UserJob::getJobId,id));
 
         JobDetailVo jobDetailVo = new JobDetailVo();
         if (!Objects.isNull(userJob)) {
