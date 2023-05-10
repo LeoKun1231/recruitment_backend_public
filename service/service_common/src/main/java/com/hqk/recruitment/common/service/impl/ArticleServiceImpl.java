@@ -359,6 +359,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public List<Long> getMajorIdsInArticle() {
         List<Long> major_id = this.list(new QueryWrapper<Article>().select("major_id")).stream().map(Article::getMajorId).collect(Collectors.toList());
+        log.warn("wara"+major_id);
         return major_id;
     }
 

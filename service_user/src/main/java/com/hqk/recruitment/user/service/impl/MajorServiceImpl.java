@@ -184,7 +184,7 @@ public class MajorServiceImpl extends ServiceImpl<MajorMapper, Major> implements
             return new ArrayList<Major>();
         }
 
-        List<Major> id = this.list(new QueryWrapper<Major>().in("id", majorIds.stream().filter(item->item!=0)));
+        List<Major> id = this.list(new QueryWrapper<Major>().in("id", majorIds.stream().filter(item->item!=1).collect(Collectors.toList())));
         return id;
     }
 
