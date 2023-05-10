@@ -261,9 +261,9 @@ public class HomeServiceImpl implements HomeService {
 
         JobDetailVo jobDetailVo = new JobDetailVo();
         if (!Objects.isNull(userJob)) {
-            jobDetailVo.setIsSend(true);
-        } else {
             jobDetailVo.setIsSend(false);
+        } else {
+            jobDetailVo.setIsSend(true);
         }
         jobDetailVo.setAvatar(company.getAvatar());
         jobDetailVo.setSize(company.getSize());
