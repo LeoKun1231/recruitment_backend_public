@@ -135,6 +135,7 @@ public class TopicServiceImpl extends ServiceImpl<TopicMapper, Topic> implements
         List<Topic> randomList = this.list(wrapper);
         if(randomList.size()!=10){
             List<Long> ids = randomList.stream().map(Topic::getId).collect(Collectors.toList());
+            ids.add(0L);
             List<Topic> list = this.list(Wrappers.<Topic>lambdaQuery().notIn(Topic::getId, ids).last("limit " + (10 - randomList.size())));
             randomList.addAll(list);
         }
