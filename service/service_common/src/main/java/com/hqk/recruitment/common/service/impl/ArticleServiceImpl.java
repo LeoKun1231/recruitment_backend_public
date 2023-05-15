@@ -73,7 +73,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     private OssClient ossClient;
 
 
-    //添加文章
+    /**
+     * 添加文章
+     * @param articleVo
+     * @return
+     */
     @Override
     public boolean addArticle(ArticleVo articleVo) {
         Article article = new Article();
@@ -106,7 +110,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return save;
     }
 
-    //删除文章
+    /**
+     * 删除文章
+     * @param articleId
+     * @return
+     */
     @Override
     public boolean removeArticle(Long articleId) {
         //删除redis中的缓存数据
@@ -127,6 +135,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         }
     }
 
+    /**
+     * 分页查询文章
+     * @param articlePageVo
+     * @return
+     */
     @Override
     public R getArticleListByPage(ArticlePageVo articlePageVo) {
         Integer typedId = articlePageVo.getTypedId();
@@ -144,9 +157,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         }
         QueryWrapper<Article> queryWrapper = new QueryWrapper<>();
 
-
         if(!Objects.isNull(typedId) && typedId!=0){
-
             //查询最热的文章
             if(typedId==1){
                 //根据浏览量排序
@@ -201,7 +212,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             queryWrapper.eq("topic_id",topicId);
         }
 
-
         Page<Article> page=new Page<>(currentPage,pageSize);
 
         this.page(page,queryWrapper);
@@ -241,6 +251,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return R.ok().message(null).data("records",articleLikeVoList).data("totalCount",page.getTotal());
     }
 
+    /**
+     * 搜索文章
+     * @param articleSearchVo
+     * @return
+     */
     @Override
     public R searchArticleByParams(ArticleSearchVo  articleSearchVo) {
         if(StringUtils.isEmpty(articleSearchVo.getTitle())){
@@ -253,6 +268,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return R.ok().message(null).data("list",list);
     }
 
+    /**
+     * 获取文章详情
+     * @param id
+     * @param authorization
+     * @return
+     */
     @Override
     public R getArticleDetailById(Long id, String authorization) {
 
@@ -278,6 +299,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return R.ok().message(null).data(map);
     }
 
+    /**
+     * 获取关联文章列表
+     * @param id
+     * @return
+     */
     @Override
     public R getArticleRelationList(Long id) {
 
@@ -346,6 +372,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return this.getArticleRelationVoList(list);
     }
 
+    /**
+     * 增加文章阅读量
+     * @param id
+     * @return
+     */
     @Override
     public R addWatchCount(Long id) {
         boolean id1 = this.update(new UpdateWrapper<Article>().eq("id", id).setSql("watch_count = watch_count + 1"));
@@ -356,6 +387,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         }
     }
 
+    /**
+     * 查询文章中有哪些专业
+     * @return
+     */
     @Override
     public List<Long> getMajorIdsInArticle() {
         List<Long> major_id = this.list(new QueryWrapper<Article>().select("major_id")).stream().map(Article::getMajorId).collect(Collectors.toList());
@@ -363,6 +398,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return major_id;
     }
 
+    /**
+     * 添加文章 上传图片
+     * @param file
+     * @return
+     */
     @Override
     public Map uploadArticle(MultipartFile file) {
 
@@ -376,6 +416,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return map;
     }
 
+
+    /**
+     * 获取本人发表的文章
+     * @param pageVo
+     * @param authorization
+     * @return
+     */
     @Override
     public R getArticleById(PageVo pageVo, String authorization) {
 
@@ -430,6 +477,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
 
+    /**
+     * 用于关联文章生成文章列表
+     * @param list
+     * @return
+     */
     private R getArticleRelationVoList(List<Article> list){
         List<ArticleRelationVo> relationList = new ArrayList<>();
         for (Article article1 : list) {

@@ -1,6 +1,6 @@
 package com.hqk.recruitment.common.service;
 
-import com.hqk.recruitment.common.entity.Report;
+import com.hqk.recruitment.model.common.Report;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hqk.recruitment.result.R;
 import com.hqk.recruitment.vo.common.ReportVo;

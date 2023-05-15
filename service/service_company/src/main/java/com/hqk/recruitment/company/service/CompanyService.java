@@ -33,8 +33,6 @@ public interface CompanyService extends IService<Company> {
 
     boolean init(Long id);
 
-    String getCompanyNameByUserId(Long id);
-
     R getCompanyDetailById(Long id);
 
 }

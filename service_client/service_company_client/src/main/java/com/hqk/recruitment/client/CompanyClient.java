@@ -15,9 +15,6 @@ public interface CompanyClient {
     @GetMapping("/init/{id}")
     public boolean initCompany(@PathVariable("id") Long id);
 
-    @GetMapping("/companyName/{id}")
-    public  String getCompanyNameByUserId(@PathVariable("id") Long id);
-
     @DeleteMapping("/company/delete/{id}")
     public boolean deleteCompanyByUserId(@PathVariable("id") Long id);
 }

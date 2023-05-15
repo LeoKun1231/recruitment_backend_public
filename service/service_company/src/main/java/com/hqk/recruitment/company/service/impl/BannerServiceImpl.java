@@ -43,6 +43,11 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
     @Resource
     private CompanyService companyService;
 
+    /**
+     * 后台模块 获取轮播图
+     * @param bannerQueryVo
+     * @return
+     */
     @Override
     public R getAdminBannerList(BannerQueryVo bannerQueryVo) {
         Integer currentPage = bannerQueryVo.getCurrentPage();
@@ -108,12 +113,22 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
         return R.ok().message(null).data("records",records).data("totalCount",page.getTotal());
     }
 
+    /**
+     * 首页轮播图列表
+     * @return
+     */
     @Override
     public RList getHomeBannerList() {
         List<Banner> list = this.list(Wrappers.<Banner>lambdaQuery().eq(Banner::getStatus, true).select(Banner::getImgUrl,Banner::getGovUrl));
         return RList.ok().message(null).data(list);
     }
 
+    /**
+     * 添加轮播图
+     * @param map
+     * @param authorization
+     * @return
+     */
     @Override
     public R addBanner(Map map,String authorization) {
         String url = (String) map.get("govUrl");
@@ -132,6 +147,13 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
         }
     }
 
+
+    /**
+     * 删除轮播图照片
+     * @param file
+     * @param authorization
+     * @return
+     */
     @Override
     public R upload(MultipartFile file, String authorization) {
 
@@ -165,6 +187,12 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
         }
     }
 
+
+    /**
+     * 删除轮播图
+     * @param authorization
+     * @return
+     */
     @Override
     public R removeUpload(String authorization) {
         String token = JwtHelper.getToken(authorization);
@@ -180,6 +208,11 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
 
     }
 
+    /**
+     * 获取轮播图详情
+     * @param authorization
+     * @return
+     */
     @Override
     public R getBannerDetail(String authorization) {
         String token = JwtHelper.getToken(authorization);
@@ -188,6 +221,12 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
         return R.ok().message(null).data("data",banner);
     }
 
+
+    /**
+     * 修改轮播图状态
+     * @param id
+     * @return
+     */
     @Override
     public R changeStatus(Long id) {
         Banner banner = this.getOne(Wrappers.<Banner>lambdaQuery().eq(Banner::getId, id));

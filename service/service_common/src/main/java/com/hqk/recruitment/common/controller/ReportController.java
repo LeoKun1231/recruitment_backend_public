@@ -1,7 +1,7 @@
 package com.hqk.recruitment.common.controller;
 
 
-import com.hqk.recruitment.common.entity.Report;
+import com.hqk.recruitment.model.common.Report;
 import com.hqk.recruitment.common.service.ReportService;
 import com.hqk.recruitment.result.R;
 import com.hqk.recruitment.vo.common.ReportVo;

@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hqk.recruitment.client.UserClient;
-import com.hqk.recruitment.common.entity.Report;
-import com.hqk.recruitment.common.entity.ReportReason;
+import com.hqk.recruitment.model.common.Report;
+import com.hqk.recruitment.model.common.ReportReason;
 import com.hqk.recruitment.common.mapper.ReportMapper;
 import com.hqk.recruitment.common.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -54,6 +54,11 @@ public class ReportServiceImpl extends ServiceImpl<ReportMapper, Report> impleme
     @Resource
     private ReportReasonService reportReasonService;
 
+    /**
+     * 添加文章/评论举报
+     * @param report
+     * @return
+     */
     @Override
     public boolean addReportArticle(Report report) {
         Long commentId = report.getCommentId();
@@ -66,6 +71,11 @@ public class ReportServiceImpl extends ServiceImpl<ReportMapper, Report> impleme
         }
     }
 
+    /**
+     * 获取被举报文章列表
+     * @param reportVo
+     * @return
+     */
     @Override
     public Map<String, Object> getArticleList(ReportVo reportVo) {
         Integer type = reportVo.getType();
@@ -195,6 +205,12 @@ public class ReportServiceImpl extends ServiceImpl<ReportMapper, Report> impleme
         return map;
     }
 
+
+    /**
+     * 删除举报
+     * @param ids
+     * @return
+     */
     @Override
     public R deleteReport(List<Long> ids) {
         List<Report> list = this.list(new QueryWrapper<Report>().in("id", ids).select("id,article_id,report_count"));
@@ -209,6 +225,11 @@ public class ReportServiceImpl extends ServiceImpl<ReportMapper, Report> impleme
         return R.ok().message("删除成功！");
     }
 
+    /**
+     * 恢复举报
+     * @param ids
+     * @return
+     */
     @Override
     public R recoverReport(List<Long> ids) {
         this.removeByIds(ids);
@@ -217,6 +238,11 @@ public class ReportServiceImpl extends ServiceImpl<ReportMapper, Report> impleme
         return R.ok().message("取消举报成功！");
     }
 
+    /**
+     * 获取评论举报列表
+     * @param reportVo
+     * @return
+     */
     @Override
     public Map<String, Object> getCommentReportList(ReportVo reportVo) {
         Integer type = reportVo.getType();
@@ -318,6 +344,11 @@ public class ReportServiceImpl extends ServiceImpl<ReportMapper, Report> impleme
         }
     }
 
+    /**
+     * 删除评论举报
+     * @param ids
+     * @return
+     */
     @Override
     public R deleteCommentReport(List<Long> ids) {
         List<Report> list = this.list(new QueryWrapper<Report>().in("id", ids).select("id,comment_id,report_count"));
@@ -332,6 +363,11 @@ public class ReportServiceImpl extends ServiceImpl<ReportMapper, Report> impleme
         return R.ok().message("删除成功！");
     }
 
+    /**
+     * 恢复评论举报
+     * @param ids
+     * @return
+     */
     @Override
     public R recoverCommentReport(List<Long> ids) {
         this.removeByIds(ids);

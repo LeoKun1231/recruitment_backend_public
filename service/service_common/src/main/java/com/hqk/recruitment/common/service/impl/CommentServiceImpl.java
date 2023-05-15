@@ -68,6 +68,11 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         }
     }
 
+    /**
+     * 获取评论列表
+     * @param commentQueryVo
+     * @return
+     */
     @Override
     public R getCommentList(CommentQueryVo commentQueryVo) {
         Long pageSize = commentQueryVo.getPageSize();
@@ -143,7 +148,6 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     /**
      * 删除评论
-     *
      * @param id
      * @return
      */
@@ -184,8 +188,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     }
 
     /**
-     * 根据文章id进行删除评论
-     *
+     * 删除文章时删除评论， 根据文章id进行删除评论
      * @param ids
      * @return
      */
@@ -214,16 +217,32 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         return this.removeByMap(map);
     }
 
+    /**
+     * 点赞
+     * @param likeOrDisLikeVo
+     * @return
+     */
     @Override
     public R doCommentLikeVo(LikeOrDisLikeVo likeOrDisLikeVo) {
         return likeOrDislikeService.doLike(likeOrDisLikeVo, false);
     }
 
+    /**
+     * 取消点赞
+     * @param likeOrDisLikeVo
+     * @return
+     */
     @Override
     public R cancelCommentLike(LikeOrDisLikeVo likeOrDisLikeVo) {
         return likeOrDislikeService.cancelLike(likeOrDisLikeVo, false);
     }
 
+
+    /**
+     * 获取更多评论
+     * @param commentQueryVo
+     * @return
+     */
     @Override
     public R getMoreChildren(CommentQueryVo commentQueryVo) {
         Long articleId = commentQueryVo.getArticleId();

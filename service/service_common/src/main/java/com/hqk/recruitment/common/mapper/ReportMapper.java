@@ -1,6 +1,6 @@
 package com.hqk.recruitment.common.mapper;
 
-import com.hqk.recruitment.common.entity.Report;
+import com.hqk.recruitment.model.common.Report;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

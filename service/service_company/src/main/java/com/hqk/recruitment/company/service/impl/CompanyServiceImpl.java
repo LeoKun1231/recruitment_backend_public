@@ -37,6 +37,13 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     @Resource
     private UserClient userClient;
 
+
+    /**
+     * 更新公司头像
+     * @param file
+     * @param authorization
+     * @return
+     */
     @Override
     public R uploadAvatar(MultipartFile file, String authorization) {
 
@@ -60,6 +67,35 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         }
     }
 
+
+    /**
+     * 删除公司头像
+     * @param map
+     * @param authorization
+     * @return
+     */
+    @Override
+    public R removeAvatar(Map map, String authorization) {
+        String url = (String) map.get("url");
+        String token = this.getToken(authorization);
+        Long userId = JwtHelper.getUserId(token);
+
+        boolean b = this.update(null, Wrappers.<Company>lambdaUpdate().set(Company::getAvatar,null).eq(Company::getUserId,userId));
+        if(b){
+            return R.ok().message(null);
+        }else{
+            return R.error().message(null);
+        }
+    }
+
+
+    /**
+     * 上传公司证明材料或者公司照片
+     * @param file
+     * @param authorization
+     * @param isCompany
+     * @return
+     */
     @Override
     public R uploadCompanyAndCertifyImages(MultipartFile file, String authorization,boolean isCompany) {
         String token = this.getToken(authorization);
@@ -85,6 +121,13 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         return R.ok().message(null).data("url",url);
     }
 
+    /**
+     * 移除公司照片或者证明材料
+     * @param map
+     * @param authorization
+     * @param isCompany
+     * @return
+     */
     @Override
     public R removeCompanyAndCertifyImage(Map map, String authorization,boolean isCompany) {
         String url = (String) map.get("url");
@@ -108,20 +151,11 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         }
     }
 
-    @Override
-    public R removeAvatar(Map map, String authorization) {
-        String url = (String) map.get("url");
-        String token = this.getToken(authorization);
-        Long userId = JwtHelper.getUserId(token);
-
-        boolean b = this.update(null, Wrappers.<Company>lambdaUpdate().set(Company::getAvatar,null).eq(Company::getUserId,userId));
-        if(b){
-            return R.ok().message(null);
-        }else{
-            return R.error().message(null);
-        }
-    }
-
+    /**
+     * 移除公司所有照片、证明材料、头像
+     * @param authorization
+     * @return
+     */
     @Override
     public R removeAll(String authorization) {
         String token = this.getToken(authorization);
@@ -139,6 +173,12 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
 
     }
 
+    /**
+     * 保存公司信息
+     * @param companyVo
+     * @param authorization
+     * @return
+     */
     @Override
     public R saveCompanyDetail(CompanyVo companyVo, String authorization) {
         String token = this.getToken(authorization);
@@ -158,6 +198,12 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         }
     }
 
+
+    /**
+     * 创建公司账号时，初始化公司
+     * @param id
+     * @return
+     */
     @Override
     public boolean init(Long id) {
         Company company = new Company();
@@ -165,15 +211,12 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         return this.save(company);
     }
 
-    @Override
-    public String getCompanyNameByUserId(Long id) {
-        Company company = this.getOne(Wrappers.<Company>lambdaQuery().eq(Company::getUserId, id).select(Company::getShortName));
-        if(Objects.isNull(company)){
-            return null;
-        }
-        return company.getShortName();
-    }
 
+    /**
+     * 获取公司详情
+     * @param id
+     * @return
+     */
     @Override
     public R getCompanyDetailById(Long id) {
         Company company = this.getOne(Wrappers.<Company>lambdaQuery().eq(Company::getUserId, id));

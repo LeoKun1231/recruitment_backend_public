@@ -84,11 +84,6 @@ public class CompanyController {
     }
 
 
-    @GetMapping("/companyName/{id}")
-    public  String getCompanyNameByUserId(@PathVariable("id") Long id){
-        return companyService.getCompanyNameByUserId(id);
-    }
-
     @DeleteMapping("/company/delete/{id}")
     public boolean deleteCompanyByUserId(@PathVariable("id") Long id){
         return companyService.remove(Wrappers.<Company>lambdaQuery().eq(Company::getUserId,id));

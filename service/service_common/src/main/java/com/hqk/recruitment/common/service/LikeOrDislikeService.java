@@ -17,6 +17,4 @@ public interface LikeOrDislikeService {
 
     Sort getLikeDetails(Long articleId);
 
-    List<Long> getTopLikeList(List<Long> ids);
-
 }

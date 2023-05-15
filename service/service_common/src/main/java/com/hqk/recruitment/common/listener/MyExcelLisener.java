@@ -3,13 +3,10 @@ package com.hqk.recruitment.common.listener;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.fastjson.JSON;
-import com.hqk.recruitment.common.entity.Dict;
-import com.hqk.recruitment.common.mapper.DictMapper;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 public class MyExcelLisener extends AnalysisEventListener<Dict> {

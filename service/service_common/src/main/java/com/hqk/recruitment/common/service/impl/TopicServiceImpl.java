@@ -91,15 +91,23 @@ public class TopicServiceImpl extends ServiceImpl<TopicMapper, Topic> implements
         }
     }
 
+    /**
+     * 更新话题
+     * @param topicUpdateVo
+     * @return
+     */
     @Override
     public boolean updateTopic(TopicUpdateVo topicUpdateVo) {
-
-
         Topic topic = new Topic();
         BeanUtils.copyProperties(topicUpdateVo,topic);
         return this.updateById(topic);
     }
 
+    /**
+     * 话题分页
+     * @param pageVo
+     * @return
+     */
     @Override
     public R listByPage(PageVo pageVo) {
         Integer currentPage = pageVo.getCurrentPage();
@@ -118,6 +126,10 @@ public class TopicServiceImpl extends ServiceImpl<TopicMapper, Topic> implements
         return R.ok().message(null).data("records", page.getRecords()).data("totalCount",page.getTotal());
     }
 
+    /**
+     * 获取随机的话题
+     * @return
+     */
     @Override
     public R getRandomList() {
         // 总记录数
@@ -143,7 +155,11 @@ public class TopicServiceImpl extends ServiceImpl<TopicMapper, Topic> implements
     }
 
 
-    //获取话题详情
+    /**
+     * 获取话题详情
+     * @param id
+     * @return
+     */
     @Override
     public R getTopicDetailById(Long id) {
         List<Article> articles = articleService.list(new QueryWrapper<Article>().eq("topic_id", id).select("watch_count"));

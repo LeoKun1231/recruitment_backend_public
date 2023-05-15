@@ -1,6 +1,6 @@
 package com.hqk.recruitment.common.service.impl;
 
-import com.hqk.recruitment.common.entity.ReportReason;
+import com.hqk.recruitment.model.common.ReportReason;
 import com.hqk.recruitment.common.mapper.ReportReasonMapper;
 import com.hqk.recruitment.common.service.ReportReasonService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
