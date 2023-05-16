@@ -11,7 +11,7 @@ node{
     }
     sh 'mvn clean install -Pprod package -Dmaven.test.skip=true'
 //     sh "mvn clean"
-//     sh "mvn install"
+//     sh "mvn install"`
 
     stage('编译,安装service_user工程'){
             echo "Building service_user"

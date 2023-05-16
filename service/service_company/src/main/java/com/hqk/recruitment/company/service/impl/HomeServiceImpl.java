@@ -51,6 +51,12 @@ public class HomeServiceImpl implements HomeService {
     @Resource
     private UserJobChatService userJobChatService;
 
+    /**
+     * 为公司或者职位添加浏览量
+     * @param id
+     * @param type
+     * @return
+     */
     @Override
     public R addWatchCount(Long id, Integer type) {
         if (1 == type) {
@@ -61,16 +67,33 @@ public class HomeServiceImpl implements HomeService {
         return R.ok().message(null);
     }
 
+
+    /**
+     * 获取热门公司
+     * @param pageVo
+     * @return
+     */
     @Override
     public R getCompanyHotList(PageVo pageVo) {
         return this.getCompanys(pageVo, null);
     }
 
+
+    /**
+     * 获取热门职位
+     * @param pageVo
+     * @return
+     */
     @Override
     public R getHotJobList(PageVo pageVo) {
         return this.getJobs(pageVo, null, null, null);
     }
 
+
+    /**
+     * 获取处于上线的公司分类列表
+     * @return
+     */
     @Override
     public RList getCompanyGategoryList() {
         List<Long> activeCompanyIds = userClient.getActiveCompany();
@@ -78,6 +101,12 @@ public class HomeServiceImpl implements HomeService {
         return RList.ok().data(category).message(null);
     }
 
+
+    /**
+     * 获取公司列表
+     * @param companyTypeVo
+     * @return
+     */
     @Override
     public R getCompanyList(CompanyTypeVo companyTypeVo) {
         PageVo pageVo = new PageVo();
@@ -85,6 +114,12 @@ public class HomeServiceImpl implements HomeService {
         return this.getCompanys(pageVo, companyTypeVo.getCategory());
     }
 
+
+    /**
+     * 获取职位列表
+     * @param jobTypeVo
+     * @return
+     */
     @Override
     public R getJobList(JobTypeVo jobTypeVo) {
         PageVo pageVo = new PageVo();
@@ -92,6 +127,12 @@ public class HomeServiceImpl implements HomeService {
         return this.getJobs(pageVo, jobTypeVo.getType(), null, null);
     }
 
+
+    /**
+     * 首页根据类别获取职位列表
+     * @param jobTypeVo
+     * @return
+     */
     @Override
     public R getJobListWithType(JobTypeVo jobTypeVo) {
         PageVo pageVo = new PageVo();
@@ -99,6 +140,12 @@ public class HomeServiceImpl implements HomeService {
         return this.getJobs(pageVo, null, jobTypeVo.getType(), null);
     }
 
+
+    /**
+     * 获取相关职位
+     * @param map
+     * @return
+     */
     @Override
     public RList getRelationJobList(Map map) {
         String firstLabel = (String) map.get("firstLabel");
@@ -208,6 +255,12 @@ public class HomeServiceImpl implements HomeService {
         return RList.ok().message(null).data(jobRelationVos);
     }
 
+
+    /**
+     * 获取首页公司详情
+     * @param id
+     * @return
+     */
     @Override
     public R getCompanyDetail(Long id) {
         Company company = companyService.getOne(Wrappers.<Company>lambdaQuery().eq(Company::getId, id));
@@ -223,6 +276,12 @@ public class HomeServiceImpl implements HomeService {
         return R.ok().message(null).data("data", companyDetailVo);
     }
 
+
+    /**
+     * 获取 首页下面 的全部公司类别
+     * @param id
+     * @return
+     */
     @Override
     public RList getCompanyHasType(Long id) {
         List<List<String>> job_type = jobService.list(new QueryWrapper<Job>()
@@ -239,6 +298,33 @@ public class HomeServiceImpl implements HomeService {
         return RList.ok().message(null).data(list);
     }
 
+    /**
+     * 获取 首页下面 的全部职位类别
+     * @param
+     * @return
+     */
+    @Override
+    public RList getJobTypeList() {
+        List<Long> activeCompanyIds = userClient.getActiveCompany();
+        List<String> companyIds = companyService.list(Wrappers.<Company>lambdaQuery().in(Company::getUserId, activeCompanyIds).select(Company::getId)).stream().map(Company::getId).collect(Collectors.toList());
+        List<List<String>> job_type = jobService.list(new QueryWrapper<Job>().eq("status", 1).select("distinct Job_type").in("company_id", companyIds)).stream().map(Job::getJobType).collect(Collectors.toList());
+        List<String> list = new ArrayList<>();
+
+        for (List<String> stringList : job_type) {
+            if (!list.contains(stringList.get(1))) {
+                list.add(stringList.get(1));
+            }
+        }
+
+        return RList.ok().message(null).data(list);
+    }
+
+
+    /**
+     *获取公司详情下的职位列表
+     * @param jobTypeVo
+     * @return
+     */
     @Override
     public R getCompanyDetailJobList(JobTypeVo jobTypeVo) {
         PageVo pageVo = new PageVo();
@@ -248,6 +334,13 @@ public class HomeServiceImpl implements HomeService {
         return this.getJobs(pageVo, type, null, companyId);
     }
 
+
+    /**
+     * 获取职位详情
+     * @param id
+     * @param authorization
+     * @return
+     */
     @Override
     public R getJobDetailById(Long id, String authorization) {
 
@@ -276,6 +369,13 @@ public class HomeServiceImpl implements HomeService {
         return R.ok().data("data", jobDetailVo).message(null);
     }
 
+
+    /**
+     * 把简历投递到职位
+     * @param id
+     * @param userId
+     * @return
+     */
     @Override
     public R addResumeToJob(Long id, Long userId) {
 
@@ -306,6 +406,13 @@ public class HomeServiceImpl implements HomeService {
         }
     }
 
+
+    /**
+     * 上传简历
+     * @param file
+     * @param authorization
+     * @return
+     */
     @Override
     public R uploadResume(MultipartFile file, String authorization) {
         String token = JwtHelper.getToken(authorization);
@@ -404,6 +511,12 @@ public class HomeServiceImpl implements HomeService {
         return null;
     }
 
+
+    /**
+     * 判断是否是第一次谈论
+     * @param userJobChat
+     * @return
+     */
     @Override
     public R checkIsChat(UserJobChat userJobChat) {
         Long userId = userJobChat.getUserId();
@@ -416,6 +529,11 @@ public class HomeServiceImpl implements HomeService {
         }
     }
 
+    /**
+     * 根据岗位名进行模糊搜索
+     * @param map
+     * @return
+     */
     @Override
     public RList getSearch(Map map) {
       String text = (String) map.get("text");
@@ -424,12 +542,23 @@ public class HomeServiceImpl implements HomeService {
     }
 
 
+    /**
+     * 保存沟通记录
+     * @param userJobChat
+     * @return
+     */
     @Override
     public R saveUserJobChat(UserJobChat userJobChat) {
         boolean save = userJobChatService.save(userJobChat);
         return R.ok().message(null);
     }
 
+
+    /**
+     * 获取本人保存的简历
+     * @param authorization
+     * @return
+     */
     @Override
     public R getResumeByToken(String authorization) {
         String token = JwtHelper.getToken(authorization);
@@ -442,6 +571,13 @@ public class HomeServiceImpl implements HomeService {
         }
     }
 
+
+    /**
+     * 获取沟通过的职位列表
+     * @param pageVo
+     * @param authorization
+     * @return
+     */
     @Override
     public R getChattingJobs(PageVo pageVo, String authorization) {
 
@@ -534,22 +670,6 @@ public class HomeServiceImpl implements HomeService {
         return RList.ok().message(null).data(list);
     }
 
-
-    @Override
-    public RList getJobTypeList() {
-        List<Long> activeCompanyIds = userClient.getActiveCompany();
-        List<String> companyIds = companyService.list(Wrappers.<Company>lambdaQuery().in(Company::getUserId, activeCompanyIds).select(Company::getId)).stream().map(Company::getId).collect(Collectors.toList());
-        List<List<String>> job_type = jobService.list(new QueryWrapper<Job>().eq("status", 1).select("distinct Job_type").in("company_id", companyIds)).stream().map(Job::getJobType).collect(Collectors.toList());
-        List<String> list = new ArrayList<>();
-
-        for (List<String> stringList : job_type) {
-            if (!list.contains(stringList.get(1))) {
-                list.add(stringList.get(1));
-            }
-        }
-
-        return RList.ok().message(null).data(list);
-    }
 
     private R getCompanys(PageVo pageVo, String type) {
         List<Long> activeCompanyIds = userClient.getActiveCompany();

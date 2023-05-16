@@ -50,6 +50,12 @@ public  class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobS
     @Resource
     private UserJobService userJobService;
 
+    /**
+     * 添加岗位
+     * @param jobUpdateVo
+     * @param authorization
+     * @return
+     */
     @Override
     public R addJob(JobUpdateVo jobUpdateVo,String authorization) {
         String token = JwtHelper.getToken(authorization);
@@ -65,6 +71,12 @@ public  class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobS
         }
     }
 
+
+    /**
+     * 更新岗位
+     * @param jobUpdateVo
+     * @return
+     */
     @Override
     public R updateJob(JobUpdateVo jobUpdateVo) {
         Job job = new Job();
@@ -76,6 +88,14 @@ public  class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobS
             return R.error().message("修改岗位失败");
         }
     }
+
+
+    /**
+     * 获取岗位列表 - 后台
+     * @param jobQueryVo
+     * @param authorization
+     * @return
+     */
     @Override
     public R getJobList(JobQueryVo jobQueryVo, String authorization) {
         String token = JwtHelper.getToken(authorization);
@@ -180,12 +200,24 @@ public  class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobS
         return R.ok().data("records", list).data("totalCount",page.getTotal()).message(null);
     }
 
+
+    /**
+     * 获取职位详情 - 后台
+     * @param id
+     * @return
+     */
     @Override
     public R getJobDetail(Long id ) {
         Job one = this.getOne(Wrappers.<Job>lambdaQuery().eq(Job::getId, id));
         return R.ok().message(null).data("data",one);
     }
 
+
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Override
     public R deleteJobById(Long id) {
         boolean b = this.removeById(id);

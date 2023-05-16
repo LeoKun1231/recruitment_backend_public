@@ -177,6 +177,7 @@ public class MajorServiceImpl extends ServiceImpl<MajorMapper, Major> implements
         }
     }
 
+
     @Override
     public List<Major> getMajorNoTreeList() {
         List<Long> majorIds = commonArticleClient.getMajorIds();
