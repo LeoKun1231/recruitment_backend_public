@@ -103,6 +103,24 @@ public class LikeOrDislikeServiceImpl implements LikeOrDislikeService {
        return new Sort(articleId, (long) members.size());
     }
 
+    @Override
+    public List<Long> getTopLikeList(List<Long> ids) {
+        List<Sort> sorts = new ArrayList<>();
+        for (Long id : ids) {
+            Sort details = getLikeDetails(id);
+            sorts.add(details);
+        }
+        Stream<Sort> sorted = sorts.stream().sorted(new Comparator<Sort>() {
+            @Override
+            public int compare(Sort o1, Sort o2) {
+                return (int) (o2.getCount() - o1.getCount());
+            }
+        });
+        List<Long> collect = sorted.map(item -> item.getId()).collect(Collectors.toList());
+        System.out.println("collect = " + collect);
+        return collect;
+    }
+
     private void checkInfo(LikeOrDisLikeVo likeOrDisLikeVo,boolean isArticle){
         if(isArticle && Objects.isNull(likeOrDisLikeVo.getArticleId())){
             System.out.println("likeOrDisLikeVo = " + likeOrDisLikeVo);
