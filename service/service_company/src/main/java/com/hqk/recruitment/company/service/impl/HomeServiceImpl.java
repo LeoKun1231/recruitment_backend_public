@@ -697,7 +697,7 @@ public class HomeServiceImpl implements HomeService {
 
         for (Company record : records) {
             CompanyListVo companyListVo = new CompanyListVo();
-            List<Job> list = jobService.list(Wrappers.<Job>lambdaQuery().eq(Job::getCompanyId, record.getId()).last("limit 2"));
+            List<Job> list = jobService.list(Wrappers.<Job>lambdaQuery().eq(Job::getStatus,1).eq(Job::getCompanyId, record.getId()).last("limit 2"));
             List<JobWithCompanyVo> jobWithCompanyVos = new ArrayList<>();
             for (Job job : list) {
                 JobWithCompanyVo jobWithCompanyVo = new JobWithCompanyVo();
