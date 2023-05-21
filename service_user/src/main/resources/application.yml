@@ -12,7 +12,7 @@ spring:
   #mysql数据库连接
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${spring.address}:3306/recruitment_user?characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://${spring.mysql.address}:3306/recruitment_user?characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
     username: root
     password: HuangWei0426
   #返回json全局时间格式
@@ -21,7 +21,7 @@ spring:
     time-zone: GMT+8
   #redis
   redis:
-    host: ${spring.address}
+    host: ${spring.redis.address}
     port: 6379
     database: 0
     lettuce:

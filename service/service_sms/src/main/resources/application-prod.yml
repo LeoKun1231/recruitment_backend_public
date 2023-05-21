@@ -14,7 +14,7 @@ spring:
     time-zone: GMT+8
   #redis
   redis:
-    host: @address@
+    host: @redis.address@
     port: 6379
     database: 0
     lettuce:

@@ -64,16 +64,18 @@
 			</activation>
 			<properties>
 				<spring.profiles.active>dev</spring.profiles.active>
-				<nacos.address>localhost:8848</nacos.address>
-				<address>43.136.87.64</address>
+				<nacos.address><!--这里填写nacos地址--></nacos.address>
+				<mysql.address><!--这里填写mysql地址--></mysql.address>
+				<redis.address><!--这里填写redis地址--></redis.address>
 			</properties>
 		</profile>
 		<profile>
 			<id>prod</id>
 			<properties>
 				<spring.profiles.active>prod</spring.profiles.active>
-				<nacos.address>43.136.87.64:8848</nacos.address>
-				<address>43.136.87.64</address>
+				<nacos.address><!--这里填写nacos地址--></nacos.address>
+				<mysql.address><!--这里填写mysql地址--></mysql.address>
+				<redis.address><!--这里填写redis地址--></redis.address>
 			</properties>
 		</profile>
 	</profiles>

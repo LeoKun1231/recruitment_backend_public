@@ -14,7 +14,7 @@ spring:
     time-zone: GMT+8
   #redis
   redis:
-    host: ${spring.address}
+    host: ${spring.redis.address}
     port: 6379
     database: 0
     lettuce:
