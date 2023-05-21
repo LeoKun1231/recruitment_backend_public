@@ -18,9 +18,9 @@ spring:
 oss:
   file:
     endpoint: oss-cn-hangzhou.aliyuncs.com
-    keyid: LTAI5tQqqSmcpCqoVyEzc97H
-    keysecret: KNTkPZziyTADLmE5X03faBBOAxTswg
-    bucketname: hqk10
+    keyid: #填写你自己的
+    keysecret:  #填写你自己的
+    bucketname:  #填写你自己的
 
 
 feign:

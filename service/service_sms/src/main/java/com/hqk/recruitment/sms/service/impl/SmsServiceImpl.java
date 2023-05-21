@@ -25,7 +25,7 @@ public class SmsServiceImpl implements SmsService {
         String host = "https://gyytz.market.alicloudapi.com";
         String path = "/sms/smsSend";
         String method = "POST";
-        String appcode = "55e4082211d0487692a8c5b5a0c9e3dc";
+        String appcode = "填写appcode";
         Map<String, String> headers = new HashMap<String, String>();
         //最后在header中的格式(中间是英文空格)为Authorization:APPCODE 83359fd73fe94948385f570e3c139105
         headers.put("Authorization", "APPCODE " + appcode);
@@ -37,8 +37,8 @@ public class SmsServiceImpl implements SmsService {
         String formatCode = String.format(stringBuilder.toString(), code);
         querys.put("param", formatCode);
 //smsSignId（短信前缀）和templateId（短信模板），可登录国阳云控制台自助申请。参考文档：http://help.guoyangyun.com/Problem/Qm.html
-        querys.put("smsSignId", "5b813ab5b78c4e77baff86046581b3f9");
-        querys.put("templateId", "908e94ccf08b4476ba6c876d13f084ad");
+        querys.put("smsSignId", "");
+        querys.put("templateId", "");
         Map<String, String> bodys = new HashMap<String, String>();
         try {
             /**
