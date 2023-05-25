@@ -18,7 +18,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://@mysql.address@:3306/recruitment_company?characterEncoding=utf-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
-    password: HuangWei0426
+    password: root
 #返回json全局时间格式
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
