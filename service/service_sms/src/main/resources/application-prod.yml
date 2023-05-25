@@ -24,7 +24,7 @@ spring:
         max-idle: 5
         min-idle: 0
       shutdown-timeout: 100
-    password: HuangWei0426
+    password: root
   #nacos
   cloud:
     nacos:
