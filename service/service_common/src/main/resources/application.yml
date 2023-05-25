@@ -14,7 +14,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${spring.mysql.address}:3306/recruitment_common?characterEncoding=utf-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
-    password: HuangWei0426
+    password: root
   #返回json全局时间格式
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
@@ -35,7 +35,7 @@ spring:
         max-idle: 5
         min-idle: 0
       shutdown-timeout: 100
-    password: HuangWei0426
+    password: root
   #nacos
   cloud:
     nacos:
